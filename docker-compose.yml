@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  au-daily-news:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: au-daily-news
+    volumes:
+      # Mount current directory to save output files
+      - ./output:/app/output
+    command: >
+      --url ${RSS_URL:-https://www.abc.net.au/news/feed/5555986/rss.xml}
+      --output /app/output/${OUTPUT_FILE:-abc_news.md}
+      --hours ${HOURS:-24}
+    environment:
+      # These can be overridden in a .env file
+      - RSS_URL=${RSS_URL:-https://www.abc.net.au/news/feed/5555986/rss.xml}
+      - OUTPUT_FILE=${OUTPUT_FILE:-abc_news.md}
+      - HOURS=${HOURS:-24}

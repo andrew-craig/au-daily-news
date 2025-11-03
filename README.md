@@ -4,13 +4,71 @@ A Python program to fetch ABC News Australia RSS feed and save entries from the 
 
 ## Installation
 
-Install the required dependencies:
+### Option 1: Docker (Recommended)
+
+Using Docker Compose:
+
+```bash
+docker-compose up
+```
+
+Or build and run with Docker:
+
+```bash
+docker build -t au-daily-news .
+docker run -v $(pwd)/output:/app/output au-daily-news --output /app/output/news.md
+```
+
+### Option 2: Local Python Installation
+
+Install dependencies using uv:
+
+```bash
+uv sync
+```
+
+Or using pip:
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
+
+### Using Docker Compose (Easiest)
+
+1. **Basic usage with defaults:**
+   ```bash
+   docker-compose up
+   ```
+   This will create an `output` folder with `abc_news.md` containing the last 24 hours of news.
+
+2. **Customize with environment variables:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your preferred settings
+   docker-compose up
+   ```
+
+3. **One-time custom run:**
+   ```bash
+   RSS_URL=https://example.com/feed.xml OUTPUT_FILE=custom.md HOURS=12 docker-compose up
+   ```
+
+### Using Docker Directly
+
+```bash
+# Build the image
+docker build -t au-daily-news .
+
+# Run with custom options
+docker run -v $(pwd)/output:/app/output au-daily-news \
+  --url https://example.com/feed.xml \
+  --output /app/output/news.md \
+  --hours 12
+```
+
+### Using Python Directly
 
 Basic usage (fetches ABC News Australia feed):
 
